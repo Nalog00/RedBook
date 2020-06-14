@@ -12,11 +12,11 @@ data class Animal (
     @ColumnInfo(name = "type")
     val type: Int,
 
-    @ColumnInfo(name = "nameUzb")
-    val nameUzb: String,
-
     @ColumnInfo(name = "nameRus")
     val nameRus: String,
+
+    @ColumnInfo(name = "nameUzb")
+    val nameUzb: String,
 
     @ColumnInfo(name = "nameEng")
     val nameEng: String,
@@ -34,10 +34,10 @@ data class Animal (
     val quantity: String,
 
     @ColumnInfo(name = "lifestyle")
-    val lifetyle: String,
+    val lifestyle: String,
 
-    @ColumnInfo(name = "imitingFactors")
-    val imitingFactors: String,
+    @ColumnInfo(name = "limitingFactors")
+    val limitingFactors: String,
 
     @ColumnInfo(name = "breeding")
     val breeding: String,
