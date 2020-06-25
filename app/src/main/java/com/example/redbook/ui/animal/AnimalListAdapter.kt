@@ -17,6 +17,7 @@ class AnimalListAdapter(private val listener: AnimalItemClickListener): Recycler
         notifyDataSetChanged()
     }
 
+
     inner class AnimalListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         fun populateModel(animal: Animal){
             itemView.tvUzbName.text = animal.nameUzb

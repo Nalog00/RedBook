@@ -10,7 +10,9 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.Fragment
 import com.example.redbook.ui.animal.AnimalFragment
+import com.example.redbook.ui.animal.SaveFragment
 
 class MainActivity : AppCompatActivity() {
     companion object{
@@ -20,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         const val REPTILES = 3
         const val BIRDS = 4
         const val MAMMALS = 5
+        const val SAVE = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,24 +42,38 @@ class MainActivity : AppCompatActivity() {
         fragment.arguments = bundle
         supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit()
         navView.setNavigationItemSelectedListener {
-            val mFragment = AnimalFragment()
+            var mFragment = Fragment()
             val mBundle = Bundle()
-            mFragment.arguments=mBundle
-            when(it.itemId){
-                R.id.nav_invertebrates->{
+            mFragment.arguments = mBundle
+            when (it.itemId) {
+                R.id.nav_invertebrates -> {
+                    mFragment = AnimalFragment()
                     mBundle.putInt(TYPE_ID, INVERTEBRATES)
-                    mFragment.arguments = mBundle}
-                R.id.nav_fishes->{
+                    mFragment.arguments = mBundle
+                }
+                R.id.nav_fishes -> {
+                    mFragment = AnimalFragment()
                     mBundle.putInt(TYPE_ID, FISHES)
-                    mFragment.arguments = mBundle}
-                R.id.nav_reptiles->{
+                    mFragment.arguments = mBundle
+                }
+                R.id.nav_reptiles -> {
+                    mFragment = AnimalFragment()
                     mBundle.putInt(TYPE_ID, REPTILES)
-                    mFragment.arguments = mBundle}
-                R.id.nav_birds->{
+                    mFragment.arguments = mBundle
+                }
+                R.id.nav_birds -> {
+                    mFragment = AnimalFragment()
                     mBundle.putInt(TYPE_ID, BIRDS)
-                    mFragment.arguments = mBundle }
-                R.id.nav_mammals->{
+                    mFragment.arguments = mBundle
+                }
+                R.id.nav_mammals -> {
+                    mFragment = AnimalFragment()
                     mBundle.putInt(TYPE_ID, MAMMALS)
+                    mFragment.arguments = mBundle
+                }
+                R.id.nav_save -> {
+                    mFragment = SaveFragment()
+                    mBundle.putInt(TYPE_ID, SAVE)
                     mFragment.arguments = mBundle
                 }
                 else -> return@setNavigationItemSelectedListener false
@@ -64,6 +81,9 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, mFragment).commit()
             drawerLayout.closeDrawer(GravityCompat.START)
             return@setNavigationItemSelectedListener true
+
+
+
         }
     }
 
