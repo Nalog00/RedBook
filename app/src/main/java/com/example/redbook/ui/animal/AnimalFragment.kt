@@ -15,35 +15,32 @@ import com.example.redbook.ui.detail.DetailActivity
 import kotlinx.android.synthetic.main.fragment_animal.*
 import kotlinx.android.synthetic.main.fragment_save.*
 
-class AnimalFragment: Fragment(R.layout.fragment_animal), AnimalItemClickListener {
+class AnimalFragment: Fragment(R.layout.fragment_animal), AnimalItemClickListener, AnimalView {
 
     private val myAdapter = AnimalListAdapter(this)
     private lateinit var dao: AnimalDao
+    private lateinit var presenter: AnimalPresenter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView.adapter = myAdapter
-        recyclerView.addItemDecoration(
-            DividerItemDecoration(
-                requireContext(),
-                DividerItemDecoration.VERTICAL
-            )
-        )
+        recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         val type = arguments?.getInt(MainActivity.TYPE_ID) ?: 1
         dao = RedBookDatabase.getInstance(requireContext()).dao()
-        setData(type)
+        presenter = AnimalPresenter(dao,this)
+        presenter.getAllAnimals(type)
         etSearch.addTextChangedListener {
             val result: List<Animal> = dao.searchAnimalByName(type, "${it.toString()}%")
             myAdapter.models = result
         }
     }
 
-        private fun setData(type: Int) {
-            myAdapter.models = dao.getAllAnimals(type)
-        }
-
     override fun onAnimalItemClick(id: Int) {
         val mIntent = Intent(requireActivity(), DetailActivity::class.java)
         mIntent.putExtra(DetailActivity.ANIMAL_ID, id)
         startActivity(mIntent)
+    }
+
+    override fun setData(models: List<Animal>) {
+        myAdapter.models = models
     }
 }
