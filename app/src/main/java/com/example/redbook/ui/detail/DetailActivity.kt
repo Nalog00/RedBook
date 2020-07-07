@@ -12,7 +12,7 @@ import com.example.redbook.data.model.Animal
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.item_animal.view.*
 
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : AppCompatActivity(), DetailView {
 
     companion object{
         const val ANIMAL_ID = "animalID"
@@ -21,6 +21,7 @@ class DetailActivity : AppCompatActivity() {
     private  var animalId = 0
     private lateinit var currentAnimal: Animal
     private lateinit var  dao: AnimalDao
+    private lateinit var presenter: DetailPresenter
     private var menuItem: MenuItem? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,18 +32,13 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.setTitle("Details")
 
         dao = RedBookDatabase.getInstance(this).dao()
+        presenter = DetailPresenter(dao,this)
         animalId = intent.getIntExtra(ANIMAL_ID,0)
+        presenter.getAnimalById(animalId)
         currentAnimal = dao.getAnimalById(animalId)
 
 
-        tvStatusContent.text = currentAnimal.status
-        tvHabitatContent.text = currentAnimal.habitat
-        tvStatusPropagation.text = currentAnimal.propagation
-        tvQuantityContent.text = currentAnimal.quantity
-        tvLifestyleContent.text = currentAnimal.lifestyle
-        tvLimitingFactorsContent.text =currentAnimal.limitingFactors
-        tvBreedingContent.text =currentAnimal.breeding
-        tvSecurityContent.text = currentAnimal.security
+
 
 
         Glide.with(this)
@@ -68,7 +64,7 @@ class DetailActivity : AppCompatActivity() {
         if(currentAnimal.isFavorite==null) currentAnimal.isFavorite = 1
         else currentAnimal.isFavorite = 1-currentAnimal.isFavorite!!
         setFavoriteIcon()
-        dao.updateAnimal(currentAnimal)
+        presenter.updateAnimal(currentAnimal)
         onRestart()
     }
 
@@ -79,5 +75,17 @@ class DetailActivity : AppCompatActivity() {
             menuItem?.setIcon(R.drawable.ic_baseline_bookmark2)
         }
     }
-    
+
+    override fun setDetailInfo(animal: Animal) {
+        currentAnimal = animal
+        tvStatusContent.text = animal.status
+        tvHabitatContent.text = animal.habitat
+        tvStatusPropagation.text = animal.propagation
+        tvQuantityContent.text = animal.quantity
+        tvLifestyleContent.text = animal.lifestyle
+        tvLimitingFactorsContent.text =animal.limitingFactors
+        tvBreedingContent.text =animal.breeding
+        tvSecurityContent.text = animal.security
+    }
+
 }
